@@ -1,0 +1,246 @@
+Learning how cURL requests work
+
+To make a cURL request to the Guardian API via the Makers News Summary API:
+
+Example provided in challenge README:
+
+curl "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/politics/blog/2014/feb/17/alex-salmond-speech-first-minister-scottish-independence-eu-currency-live?show-fields=body"
+
+The components are as follows:
+
+curl
+open double quotes
+http://news-summary-api.herokuapp.com/guardian
+?apiRequestUrl=
+The Guardian page required: http://content.guardianapis.com/politics/blog/2014/feb/17/alex-salmond-speech-first-minister-scottish-independence-eu-currency-live
+?show-fields=body
+close double quotes
+ |jq (to run in Terminal)
+
+Query string to search for headlines:
+search?section=uk-news%26from-date=2019-10-06%26show-fields=headline,thumbnail
+
+
+********************************************************************************
+
+
+Attempt 1: Trying to get headlines:
+curl "
+http://news-summary-api.herokuapp.com/guardian?
+apiRequestUrl=
+search?section=uk-news%26from-date=2019-10-06%26show-fields=headline
+"
+ |jq
+=>
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100    73  100    73    0     0    341      0 --:--:-- --:--:-- --:--:--   341
+{
+  "error": "apiRequestUrl must start with http://content.guardianapis.com"
+}
+
+
+********************************************************************************
+
+
+
+Attempt 2: as above, but with http://content.guardianapis.com before query string:
+curl "
+http://news-summary-api.herokuapp.com/guardian
+?apiRequestUrl=
+http://content.guardianapis.com
+/ (I presume this is needed to separate)
+search?section=uk-news%26from-date=2019-10-06%26show-fields=headline
+"
+ |jq
+
+Altogether:
+curl "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/search?section=uk-news%26from-date=2019-10-06%26show-fields=headline" |jq
+=>
+% Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                               Dload  Upload   Total   Spent    Left  Speed
+100  6712  100  6712    0     0  16068      0 --:--:-- --:--:-- --:--:-- 16095
+{
+  "response": {
+    "status": "ok",
+    "userTier": "developer",
+    "total": 13,
+    "startIndex": 1,
+    "pageSize": 10,
+    "currentPage": 1,
+    "pages": 2,
+    "orderBy": "newest",
+    "results": [
+      {
+        "id": "uk-news/2019/oct/06/all-hope-had-gone-grieving-british-mother-criticises-us-embassy",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T22:29:41Z",
+        "webTitle": "Police chiefs ask US to waive immunity for envoy's wife in crash",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/all-hope-had-gone-grieving-british-mother-criticises-us-embassy",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/all-hope-had-gone-grieving-british-mother-criticises-us-embassy",
+        "fields": {
+          "headline": "Police chiefs ask US to waive immunity for envoy's wife in crash"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/operation-midland-only-one-officer-spoke-to-watchdog-report",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T21:47:26Z",
+        "webTitle": "Operation Midland: Only one officer spoke to investigation into police failures",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/operation-midland-only-one-officer-spoke-to-watchdog-report",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/operation-midland-only-one-officer-spoke-to-watchdog-report",
+        "fields": {
+          "headline": "Operation Midland: Only one officer spoke to investigation into police failures"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/prince-harrys-tabloid-lawsuit-will-likely-take-a-year-to-get-to-court",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T19:02:37Z",
+        "webTitle": "Prince Harry’s tabloid lawsuit 'will likely take a year to get to court'",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/prince-harrys-tabloid-lawsuit-will-likely-take-a-year-to-get-to-court",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/prince-harrys-tabloid-lawsuit-will-likely-take-a-year-to-get-to-court",
+        "fields": {
+          "headline": "Prince Harry’s tabloid lawsuit 'will likely take a year to get to court'"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/counter-terror-police-are-running-secret-prevent-database",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T18:03:28Z",
+        "webTitle": "Counter-terror police running secret Prevent database",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/counter-terror-police-are-running-secret-prevent-database",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/counter-terror-police-are-running-secret-prevent-database",
+        "fields": {
+          "headline": "Counter-terror police running secret Prevent database"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/prevent-strategy-your-questions-answered",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T18:03:18Z",
+        "webTitle": "Prevent strategy: your questions answered",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/prevent-strategy-your-questions-answered",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/prevent-strategy-your-questions-answered",
+        "fields": {
+          "headline": "Prevent strategy: your questions answered"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/runner-dies-after-taking-part-in-cardiff-half-marathon",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T17:01:40Z",
+        "webTitle": "Runner dies after taking part in Cardiff half marathon",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/runner-dies-after-taking-part-in-cardiff-half-marathon",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/runner-dies-after-taking-part-in-cardiff-half-marathon",
+        "fields": {
+          "headline": "Runner dies after taking part in Cardiff half marathon"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/flood-warnings-as-uk-braces-for-more-wet-weather",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T16:13:24Z",
+        "webTitle": "Flood warnings as UK braces for more wet weather",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/flood-warnings-as-uk-braces-for-more-wet-weather",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/flood-warnings-as-uk-braces-for-more-wet-weather",
+        "fields": {
+          "headline": "Flood warnings as UK braces for more wet weather"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/teenager-stabbed-friend-death-named-joshua-molnar",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T16:13:04Z",
+        "webTitle": "Teenager who stabbed friend to death named as Joshua Molnar",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/teenager-stabbed-friend-death-named-joshua-molnar",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/teenager-stabbed-friend-death-named-joshua-molnar",
+        "fields": {
+          "headline": "Teenager who stabbed friend to death named as Joshua Molnar"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/boris-johnson-filthy-piece-of-toerag-video-critic-goes-viral",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T15:06:44Z",
+        "webTitle": "'Filthy piece of toerag' video of Boris Johnson critic goes viral",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/boris-johnson-filthy-piece-of-toerag-video-critic-goes-viral",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/boris-johnson-filthy-piece-of-toerag-video-critic-goes-viral",
+        "fields": {
+          "headline": "'Filthy piece of toerag' video of Boris Johnson critic goes viral"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      },
+      {
+        "id": "uk-news/2019/oct/06/magistrates-call-for-close-monitoring-of-defence-claims-by-county-lines-victims",
+        "type": "article",
+        "sectionId": "uk-news",
+        "sectionName": "UK news",
+        "webPublicationDate": "2019-10-06T14:58:44Z",
+        "webTitle": "Magistrates raise concerns over county lines defence 'loophole'",
+        "webUrl": "https://www.theguardian.com/uk-news/2019/oct/06/magistrates-call-for-close-monitoring-of-defence-claims-by-county-lines-victims",
+        "apiUrl": "https://content.guardianapis.com/uk-news/2019/oct/06/magistrates-call-for-close-monitoring-of-defence-claims-by-county-lines-victims",
+        "fields": {
+          "headline": "Magistrates raise concerns over county lines defence 'loophole'"
+        },
+        "isHosted": false,
+        "pillarId": "pillar/news",
+        "pillarName": "News"
+      }
+    ]
+  }
+}
+
+
+********************************************************************************
+
+
+
+Attempt 3: Same request as above, but without piping the result into jq:
+=>
+tp://content.guardianapis.com/search?section=uk-news%26from-date=2019-10-06%26show-fields=headline"
+{"response":{"status":"ok","userTier":"developer","total":13,"startIndex":1,"pageSize":10,"currentPage":1,"pages":2,"orderBy":"newest","results":[{"id":"uk-news/2019/oct/06/all-hope-had-gone-grieving-british-mother-criticises-us-embassy","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T22:29:41Z","webTitle":"Police chiefs ask US to waive immunity for envoy's wife in crash","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/all-hope-had-gone-grieving-british-mother-criticises-us-embassy","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/all-hope-had-gone-grieving-british-mother-criticises-us-embassy","fields":{"headline":"Police chiefs ask US to waive immunity for envoy's wife in crash"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/operation-midland-only-one-officer-spoke-to-watchdog-report","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T21:47:26Z","webTitle":"Operation Midland: Only one officer spoke to investigation into police failures","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/operation-midland-only-one-officer-spoke-to-watchdog-report","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/operation-midland-only-one-officer-spoke-to-watchdog-report","fields":{"headline":"Operation Midland: Only one officer spoke to investigation into police failures"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/prince-harrys-tabloid-lawsuit-will-likely-take-a-year-to-get-to-court","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T19:02:37Z","webTitle":"Prince Harry’s tabloid lawsuit 'will likely take a year to get to court'","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/prince-harrys-tabloid-lawsuit-will-likely-take-a-year-to-get-to-court","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/prince-harrys-tabloid-lawsuit-will-likely-take-a-year-to-get-to-court","fields":{"headline":"Prince Harry’s tabloid lawsuit 'will likely take a year to get to court'"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/counter-terror-police-are-running-secret-prevent-database","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T18:03:28Z","webTitle":"Counter-terror police running secret Prevent database","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/counter-terror-police-are-running-secret-prevent-database","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/counter-terror-police-are-running-secret-prevent-database","fields":{"headline":"Counter-terror police running secret Prevent database"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/prevent-strategy-your-questions-answered","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T18:03:18Z","webTitle":"Prevent strategy: your questions answered","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/prevent-strategy-your-questions-answered","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/prevent-strategy-your-questions-answered","fields":{"headline":"Prevent strategy: your questions answered"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/runner-dies-after-taking-part-in-cardiff-half-marathon","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T17:01:40Z","webTitle":"Runner dies after taking part in Cardiff half marathon","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/runner-dies-after-taking-part-in-cardiff-half-marathon","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/runner-dies-after-taking-part-in-cardiff-half-marathon","fields":{"headline":"Runner dies after taking part in Cardiff half marathon"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/flood-warnings-as-uk-braces-for-more-wet-weather","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T16:13:24Z","webTitle":"Flood warnings as UK braces for more wet weather","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/flood-warnings-as-uk-braces-for-more-wet-weather","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/flood-warnings-as-uk-braces-for-more-wet-weather","fields":{"headline":"Flood warnings as UK braces for more wet weather"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/teenager-stabbed-friend-death-named-joshua-molnar","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T16:13:04Z","webTitle":"Teenager who stabbed friend to death named as Joshua Molnar","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/teenager-stabbed-friend-death-named-joshua-molnar","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/teenager-stabbed-friend-death-named-joshua-molnar","fields":{"headline":"Teenager who stabbed friend to death named as Joshua Molnar"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/boris-johnson-filthy-piece-of-toerag-video-critic-goes-viral","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T15:06:44Z","webTitle":"'Filthy piece of toerag' video of Boris Johnson critic goes viral","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/boris-johnson-filthy-piece-of-toerag-video-critic-goes-viral","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/boris-johnson-filthy-piece-of-toerag-video-critic-goes-viral","fields":{"headline":"'Filthy piece of toerag' video of Boris Johnson critic goes viral"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"},{"id":"uk-news/2019/oct/06/magistrates-call-for-close-monitoring-of-defence-claims-by-county-lines-victims","type":"article","sectionId":"uk-news","sectionName":"UK news","webPublicationDate":"2019-10-06T14:58:44Z","webTitle":"Magistrates raise concerns over county lines defence 'loophole'","webUrl":"https://www.theguardian.com/uk-news/2019/oct/06/magistrates-call-for-close-monitoring-of-defence-claims-by-county-lines-victims","apiUrl":"https://content.guardianapis.com/uk-news/2019/oct/06/magistrates-call-for-close-monitoring-of-defence-claims-by-county-lines-victims","fields":{"headline":"Magistrates raise concerns over county lines defence 'loophole'"},"isHosted":false,"pillarId":"pillar/news","pillarName":"News"}]}}

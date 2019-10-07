@@ -1,0 +1,1 @@
+I'm responding to an ajax request made using jquery.

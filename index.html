@@ -1,4 +1,9 @@
-<!DOCTYPE html>
+<!-- Using references from W3 schools to understand various types of request: -->
+
+<!-- Using the XMLHttpRequest object to replace the text of a div element
+with text from a local file into the html: -->
+
+<!-- <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
   <meta charset="utf-8">
@@ -23,6 +28,32 @@
       xhttp.send();
     }
   </script>
+
+</body>
+</html> -->
+
+<!-- Using jquery to replace the text of a <div> element
+with text from a local file, using an AJAX request: -->
+
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+  $("button").click(function(){
+    $.ajax({url: "test-info2.txt", success: function(result){
+      $("#div1").html(result);
+    }});
+  });
+});
+</script>
+</head>
+<body>
+
+<div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
+
+<button>Get External Content</button>
 
 </body>
 </html>
