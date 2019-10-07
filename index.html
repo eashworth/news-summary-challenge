@@ -34,7 +34,7 @@ with text from a local file into the html: -->
 
 <!-- Using jquery to replace the text of a <div> element
 with text from a local file, using an AJAX request: -->
-
+<!--
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,6 +54,39 @@ $(document).ready(function(){
 <div id="div1"><h2>Let jQuery AJAX Change This Text</h2></div>
 
 <button>Get External Content</button>
+
+</body>
+</html> -->
+
+
+<!-- Using the XMLHttpRequest object
+to make the same request as in the Makers curl example: -->
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+</head>
+<body>
+  <div id="demo">
+    <h1>The XMLHttpRequest Object</h1>
+    <button type="button" onclick="loadDoc()">Change Content</button>
+  </div>
+
+  <script>
+    function loadDoc() {
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        // if (this.readyState == 4 && this.status == 200) {
+          document.getElementById("demo").innerHTML =
+          this.responseText;
+        // }
+      };
+      xhttp.open("GET", "http://news-summary-api.herokuapp.com/guardian?apiRequestUrl=http://content.guardianapis.com/search?section=uk-news%26from-date=2019-10-06%26show-fields=headline", true);
+      xhttp.send();
+    }
+  </script>
 
 </body>
 </html>
